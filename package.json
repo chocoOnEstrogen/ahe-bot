@@ -1,7 +1,7 @@
 {
-  "name": "typescript-template",
+  "name": "ahe-bot",
   "version": "1.0.0",
-  "description": "A basic TypeScript template",
+  "description": "A bot that posts anime images to Bluesky",
   "main": "dist/index.js",
   "directories": {
     "doc": "docs"
@@ -23,14 +23,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chocoOnEstrogen/repo-template.git"
+    "url": "git+https://github.com/chocoOnEstrogen/ahe-bot.git"
   },
-  "author": "choco <choco.rip>",
+  "author": "chocoOnEstrogen <choco.rip>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/chocoOnEstrogen/repo-template/issues"
+    "url": "https://github.com/chocoOnEstrogen/ahe-bot/issues"
   },
-  "homepage": "https://github.com/chocoOnEstrogen/repo-template#readme",
+  "homepage": "https://github.com/chocoOnEstrogen/ahe-bot#readme",
   "devDependencies": {
     "@types/node-cron": "^3.0.11",
     "prettier": "^3.3.3",
