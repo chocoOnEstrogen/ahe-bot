@@ -30,27 +30,39 @@ export class PostingService {
 	}
 
 	private async fetchRandomImage() {
-		// Randomly select a provider
-		const provider = Math.random() < 0.5 ? 'gelbooru' : 'rule34'
+		// Try both providers if first one fails
+		const providers = ['gelbooru', 'rule34'] as const
+		const startIndex = Math.random() < 0.5 ? 0 : 1
 
-		const searchParams = {
-			query: '', // Empty query to get random images
-			page: Math.floor(Math.random() * 100) + 1, // Random page between 1-100 for more variety
-			limit: 1,
+		for (let i = 0; i < providers.length; i++) {
+			const providerIndex = (startIndex + i) % providers.length
+			const provider = providers[providerIndex]
+
+			const searchParams = {
+				query: '', // Empty query to get random images
+				page: Math.floor(Math.random() * 100) + 1, // Random page between 1-100 for more variety
+				limit: 1,
+			}
+
+			try {
+				const response = await this.providers[provider].search(searchParams)
+
+				if (!response.success || response.data.length === 0) {
+					continue
+				}
+
+				const post = response.data[0]
+				return {
+					url: post.file_url,
+					tags: post.tags.split(' '),
+					rating: post.rating,
+				}
+			} catch (error) {
+				continue
+			}
 		}
 
-		const response = await this.providers[provider].search(searchParams)
-
-		if (!response.success || response.data.length === 0) {
-			throw new Error(`Failed to fetch image from ${provider}`)
-		}
-
-		const post = response.data[0]
-		return {
-			url: post.file_url,
-			tags: post.tags.split(' '),
-			rating: post.rating,
-		}
+		throw new Error('Failed to fetch image from all providers')
 	}
 
 	private async downloadAndResizeImage(url: string): Promise<{
