@@ -115,53 +115,27 @@ export class PostingService {
 	async createPost() {
 		try {
 			const { url, tags, rating } = await this.fetchRandomImage()
-			const { buffer, type, width, height } = await this.downloadAndResizeImage(url)
+			const { buffer, type, width, height } =
+				await this.downloadAndResizeImage(url)
 
 			const displayTags = tags.slice(0, 5)
 			const isNsfw = rating === 'explicit'
 			const hashTags = displayTags.map(tag => `#${tag}`)
 			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')} ${hashTags.join(' ')}`
-			
-			// Create post text with hashtags at the end
-			const postText = `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}\n${hashTags.join(' ')}`
-			
-			// Create facets for hashtags
-			const facets = []
-			const encoder = new TextEncoder()
-			const text = postText
-			
-			// Find all hashtags and create facets for them
-			const tagRegex = /(?:^|\s)(#[^\d\s]\S*)(?=\s|$)/g
-			let match
-			while ((match = tagRegex.exec(text)) !== null) {
-				const tag = match[1]
-				const startIndex = match.index + (match[0].startsWith(' ') ? 1 : 0)
-				
-				facets.push({
-					index: {
-						byteStart: encoder.encode(text.slice(0, startIndex)).length,
-						byteEnd: encoder.encode(text.slice(0, startIndex + tag.length)).length
-					},
-					features: [{
-						$type: 'app.bsky.richtext.facet#tag',
-						tag: tag.slice(1) // Remove # from the tag
-					}]
-				})
-			}
-
 			const post: IPost = {
-				text: postText,
-				facets: facets.length > 0 ? facets : undefined,
+				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}\n${hashTags.join(' ')}`,
 				tags: displayTags,
-				images: [{
-					alt: altText,
-					image: buffer,
-					imageType: type,
-					aspectRatio: {
-						width,
-						height,
+				images: [
+					{
+						alt: altText,
+						image: buffer,
+						imageType: type,
+						aspectRatio: {
+							width,
+							height,
+						},
 					},
-				}],
+				],
 			}
 
 			await Bluesky.createPost(post)

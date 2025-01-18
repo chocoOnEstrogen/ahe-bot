@@ -1,25 +1,13 @@
 export interface IPost {
 	text: string
 	tags: string[]
-	facets?: {
-		index: {
-			byteStart: number
-			byteEnd: number
-		}
-		features: Array<{
-			$type: string
-			tag?: string
-			uri?: string
-			did?: string
-		}>
-	}[]
-	images?: Array<{
+	images?: {
 		alt: string
 		image: string
-		imageType: string
+		imageType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
 		aspectRatio: {
 			width: number
 			height: number
 		}
-	}>
+	}[]
 }
