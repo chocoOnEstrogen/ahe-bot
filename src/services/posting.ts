@@ -3,6 +3,7 @@ import { Rule34 } from '@/services/providers/rule34'
 import { Bluesky } from '@/services/bluesky'
 import { IPost } from '@/interfaces/IPost'
 import sharp from 'sharp'
+import { config } from '@/config'
 
 export class PostingService {
 	private providers: {
@@ -30,17 +31,17 @@ export class PostingService {
 	}
 
 	private async fetchRandomImage() {
-		// Try both providers if first one fails
 		const providers = ['gelbooru', 'rule34'] as const
 		const startIndex = Math.random() < 0.5 ? 0 : 1
+		const wantSfw = Math.random() * 100 < config.posting.sfwChance
 
 		for (let i = 0; i < providers.length; i++) {
 			const providerIndex = (startIndex + i) % providers.length
 			const provider = providers[providerIndex]
 
 			const searchParams = {
-				query: '', // Empty query to get random images
-				page: Math.floor(Math.random() * 100) + 1, // Random page between 1-100 for more variety
+				query: wantSfw ? 'rating:safe' : 'rating:explicit', // Filter by desired rating
+				page: Math.floor(Math.random() * 100) + 1,
 				limit: 1,
 			}
 

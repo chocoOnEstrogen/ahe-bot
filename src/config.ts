@@ -4,5 +4,6 @@ export const config: IConfig = {
 	posting: {
 		enabled: true,
 		interval: '*/5 * * * *', 
+		sfwChance: 10,
 	},
 };
