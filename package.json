@@ -1,0 +1,46 @@
+{
+  "name": "typescript-template",
+  "version": "1.0.0",
+  "description": "A basic TypeScript template",
+  "main": "dist/index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "format": "prettier --cache --write . --ignore-path .prettierignore",
+    "build": "tsc",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js",
+    "serve": "ts-node -r tsconfig-paths/register src/server.ts",
+    "docker:build": "bash scripts/docker-build.sh",
+    "docker:run": "bash scripts/docker-run.sh",
+    "docker:compose": "docker-compose up -d",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chocoOnEstrogen/repo-template.git"
+  },
+  "author": "choco <choco.rip>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/chocoOnEstrogen/repo-template/issues"
+  },
+  "homepage": "https://github.com/chocoOnEstrogen/repo-template#readme",
+  "devDependencies": {
+    "@types/node-cron": "^3.0.11",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.13.28",
+    "axios": "^1.7.9",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
+    "sharp": "^0.33.5"
+  }
+}

@@ -1,0 +1,153 @@
+[
+    {
+        "term": "loli",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Term associated with underage content"
+    },
+    {
+        "term": "lolicon",
+        "category": "age_specific",
+        "severity": "high", 
+        "description": "Term associated with underage content"
+    },
+    {
+        "term": "lolita",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Term associated with underage content"
+    },
+    {
+        "term": "shota",
+        "category": "age_specific", 
+        "severity": "high",
+        "description": "Term associated with underage content"
+    },
+    {
+        "term": "young",
+        "category": "age_descriptor",
+        "severity": "medium",
+        "description": "Age-related term that may indicate underage content"
+    },
+    {
+        "term": "child",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+
+    {
+        "term": "child_on_child",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "underage",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "minor",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "toddler",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "teen",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "teenager",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "cub",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Term associated with underage content"
+    },
+    {
+        "term": "baby",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "kid",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "kindergarten",
+        "category": "educational",
+        "severity": "high",
+        "description": "Educational stage associated with minors"
+    },
+    {
+        "term": "elementary",
+        "category": "educational",
+        "severity": "high",
+        "description": "Educational stage associated with minors"
+    },
+    {
+        "term": "middle_school",
+        "category": "educational",
+        "severity": "high",
+        "description": "Educational stage associated with minors"
+    },
+    {
+        "term": "high_school",
+        "category": "educational",
+        "severity": "high",
+        "description": "Educational stage associated with minors"
+    },
+    {
+        "term": "student",
+        "category": "educational",
+        "severity": "medium",
+        "description": "Educational role that may indicate minors"
+    },
+    {
+        "term": "junior",
+        "category": "age_descriptor",
+        "severity": "medium",
+        "description": "Age-related term that may indicate underage content"
+    },
+    {
+        "term": "preteen",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "adolescent",
+        "category": "age_specific",
+        "severity": "high",
+        "description": "Direct reference to minors"
+    },
+    {
+        "term": "youth",
+        "category": "age_descriptor",
+        "severity": "medium",
+        "description": "Age-related term that may indicate underage content"
+    },
+    {
+        "term": "infantilization",
+        "category": "behavioral",
+        "severity": "high",
+        "description": "Term associated with inappropriate age-related content"
+    }
+]
