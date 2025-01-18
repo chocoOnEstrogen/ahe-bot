@@ -149,5 +149,23 @@
         "category": "behavioral",
         "severity": "high",
         "description": "Term associated with inappropriate age-related content"
+    },
+    {
+        "term": "childish",
+        "category": "behavioral",
+        "severity": "high",
+        "description": "Term associated with inappropriate age-related content"
+    },
+    {
+        "term": "ai_generated",
+        "category": "ai_generated",
+        "severity": "high",
+        "description": "Term associated with AI-generated content"
+    },
+    {
+        "term": "ai_generated_image",
+        "category": "ai_generated",
+        "severity": "high",
+        "description": "Term associated with AI-generated content"
     }
 ]
