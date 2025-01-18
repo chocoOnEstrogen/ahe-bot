@@ -167,5 +167,17 @@
         "category": "ai_generated",
         "severity": "high",
         "description": "Term associated with AI-generated content"
+    },
+    {
+        "term": "after_rape",
+        "category": "behavioral",
+        "severity": "high",
+        "description": "Term associated with rape"
+    },
+    {
+        "term": "rape",
+        "category": "behavioral",
+        "severity": "high",
+        "description": "Term associated with rape"
     }
 ]
