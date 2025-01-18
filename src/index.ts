@@ -1,3 +1,4 @@
+import 'module-alias/register';
 import 'dotenv/config'
 import cron from 'node-cron'
 import { PostingService } from '@/services/posting'
