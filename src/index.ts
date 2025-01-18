@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cron from 'node-cron'
 import { PostingService } from '@/services/posting'
 import { config } from './config';
+import { startServer } from './server';
 
 async function main() {
 	const postingService = new PostingService()
@@ -14,6 +15,8 @@ async function main() {
 	})
 
 	console.log(`Bot started! Posts will be created every ${config.posting.interval} interval.`)
+
+	startServer()
 }
 
 main().catch(console.error)

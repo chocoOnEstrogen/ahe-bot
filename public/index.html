@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHE Bot Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: .5rem 1rem;
+            margin: .2rem 0;
+            border-radius: .25rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .nav-link.active {
+            color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            border: 1px solid #dee2e6;
+            position: relative;
+        }
+
+        pre code {
+            display: block;
+            overflow-x: auto;
+            padding: 0;
+            font-size: 0.875em;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 0.25rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #f8f9fa;
+        }
+
+        .term-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .term-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .severity-high {
+            border-left: 4px solid #dc3545;
+        }
+
+        .severity-medium {
+            border-left: 4px solid #ffc107;
+        }
+
+        .severity-low {
+            border-left: 4px solid #198754;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            padding-left: 2.5rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .category-filter {
+            margin-bottom: 1rem;
+        }
+
+        .category-badge {
+            cursor: pointer;
+            margin: 0.25rem;
+            user-select: none;
+        }
+
+        .category-badge.active {
+            background-color: #0d6efd !important;
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .api-method {
+            font-weight: bold;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+        }
+
+        .api-method.get {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .api-method.post {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .api-method.delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .api-method.put {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                padding-top: 0;
+            }
+            
+            main {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="padding-top: 60px;"></div>
+    <nav class="navbar navbar-dark bg-dark fixed-top d-flex justify-content-between">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-robot"></i> AHE Bot Documentation
+            </a>
+            <div class="d-flex">
+                <a href="https://github.com/chocoOnEstrogen/ahe-bot" class="btn btn-outline-light me-2" target="_blank">
+                    <i class="bi bi-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar offcanvas-md offcanvas-start">
+                <div class="offcanvas-header d-md-none">
+                    <h5 class="offcanvas-title">Navigation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar"></button>
+                </div>
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#overview">
+                                <i class="bi bi-house-door"></i> Overview
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">
+                                <i class="bi bi-stars"></i> Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#installation">
+                                <i class="bi bi-download"></i> Installation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#configuration">
+                                <i class="bi bi-gear"></i> Configuration
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#block-list">
+                                <i class="bi bi-shield"></i> Block List
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#api">
+                                <i class="bi bi-code-slash"></i> API Reference
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#deployment">
+                                <i class="bi bi-cloud-upload"></i> Deployment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#troubleshooting">
+                                <i class="bi bi-question-circle"></i> Troubleshooting
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contributing">
+                                <i class="bi bi-people"></i> Contributing
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5">
+                <!-- Overview Section -->
+                <section id="overview" class="mb-5">
+                    <h2 class="border-bottom pb-2">Overview</h2>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-robot text-primary"></i> What is AHE Bot?
+                                    </h5>
+                                    <p class="card-text">AHE Bot is a TypeScript-based bot that automatically posts anime images to Bluesky. It fetches images from popular anime image boards, processes them, and posts them with relevant tags.</p>
+                                    <p class="card-text">Built with modern technologies and best practices, it provides a reliable and efficient way to automate content sharing while maintaining strict content filtering.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-stars text-warning"></i> Key Features
+                                    </h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Automatic image fetching and processing</li>
+                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Smart content filtering system</li>
+                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Built-in caching for performance</li>
+                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Multiple image provider support</li>
+                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Automatic tag processing</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Features Section -->
+                <section id="features" class="mb-5">
+                    <h2 class="border-bottom pb-2">Features</h2>
+                    <div class="row mt-4 g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-image feature-icon"></i>
+                                    <h5 class="card-title">Image Processing</h5>
+                                    <p class="card-text">Automatic image resizing and optimization for Bluesky's requirements. Supports multiple formats including JPEG, PNG, and GIF.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-shield-check feature-icon"></i>
+                                    <h5 class="card-title">Content Filtering</h5>
+                                    <p class="card-text">Advanced content filtering system with customizable rules and severity levels to ensure appropriate content.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-speedometer2 feature-icon"></i>
+                                    <h5 class="card-title">Performance</h5>
+                                    <p class="card-text">Built-in caching system and optimized API calls for maximum performance and reliability.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation Section -->
+                <section id="installation" class="mb-5">
+                    <h2 class="border-bottom pb-2">Installation</h2>
+                    <div class="mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Prerequisites</h5>
+                                <ul>
+                                    <li>Node.js (v16 or higher)</li>
+                                    <li>npm or yarn</li>
+                                    <li>A Bluesky account</li>
+                                </ul>
+                                <h5>Quick Start</h5>
+                                <pre><code>git clone https://github.com/chocoOnEstrogen/ahe-bot.git
+cd ahe-bot
+npm install
+npm run dev</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                                <div class="alert alert-info mt-3">
+                                    <i class="bi bi-info-circle"></i> For development, you'll need to set up your environment variables. See the Configuration section for details.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configuration Section -->
+                <section id="configuration" class="mb-5">
+                    <h2 class="border-bottom pb-2">Configuration</h2>
+                    <div class="mt-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5>Environment Variables</h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Variable</th>
+                                            <th>Description</th>
+                                            <th>Required</th>
+                                            <th>Default</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>BLUESKY_IDENTIFIER</code></td>
+                                            <td>Your Bluesky handle</td>
+                                            <td><span class="badge bg-success">Yes</span></td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>BLUESKY_PASSWORD</code></td>
+                                            <td>Your Bluesky app password</td>
+                                            <td><span class="badge bg-success">Yes</span></td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>GELBOORU_API_KEY</code></td>
+                                            <td>Gelbooru API key</td>
+                                            <td><span class="badge bg-secondary">No</span></td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>PORT</code></td>
+                                            <td>Server port number</td>
+                                            <td><span class="badge bg-secondary">No</span></td>
+                                            <td>3000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Configuration Files</h5>
+                                <div class="accordion" id="configAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEnv">
+                                                .env
+                                            </button>
+                                        </h2>
+                                        <div id="collapseEnv" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+                                            <div class="accordion-body">
+                                                <pre><code>BLUESKY_IDENTIFIER=your.handle
+BLUESKY_PASSWORD=your-app-password
+GELBOORU_API_KEY=your-api-key
+PORT=3000</code>
+                                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                                </pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Block List Section -->
+                <section id="block-list" class="mb-5">
+                    <h2 class="border-bottom pb-2">Block List</h2>
+                    <div class="mt-4">
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" class="form-control" id="termSearch" placeholder="Search terms...">
+                        </div>
+                        <div class="category-filter">
+                            <span class="badge bg-secondary category-badge active" data-category="all">All</span>
+                            <!-- Categories will be populated dynamically -->
+                        </div>
+                        <div class="row" id="blockListContainer">
+                            <!-- Block list items will be populated here via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Reference Section -->
+                <section id="api" class="mb-5">
+                    <h2 class="border-bottom pb-2">API Reference</h2>
+                    <div class="mt-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>
+                                    <span class="api-method get">GET</span>
+                                    /api/providers
+                                </h5>
+                                <p>Returns a list of available image providers.</p>
+                                <h6>Response</h6>
+                                <pre><code>{
+    "success": true,
+    "data": ["gelbooru", "rule34"]
+}</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>
+                                    <span class="api-method get">GET</span>
+                                    /api/search
+                                </h5>
+                                <p>Search for images across providers.</p>
+                                <h6>Parameters</h6>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                            <th>Required</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>provider</code></td>
+                                            <td>string</td>
+                                            <td>Provider name (gelbooru, rule34)</td>
+                                            <td><span class="badge bg-secondary">No</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>query</code></td>
+                                            <td>string</td>
+                                            <td>Search query</td>
+                                            <td><span class="badge bg-secondary">No</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>page</code></td>
+                                            <td>number</td>
+                                            <td>Page number</td>
+                                            <td><span class="badge bg-secondary">No</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h6>Response</h6>
+                                <pre><code>{
+    "success": true,
+    "data": [
+        {
+            "id": 123456,
+            "file_url": "https://example.com/image.jpg",
+            "tags": "tag1 tag2 tag3",
+            "rating": "safe"
+        }
+    ],
+    "hasMore": true
+}</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Deployment Section -->
+                <section id="deployment" class="mb-5">
+                    <h2 class="border-bottom pb-2">Deployment</h2>
+                    <div class="mt-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>Docker Deployment</h5>
+                                <p>Deploy using Docker Compose:</p>
+                                <pre><code>docker-compose up -d</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>PM2 Deployment</h5>
+                                <p>Deploy using PM2 process manager:</p>
+                                <pre><code>npm run pm2:start</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Manual Deployment</h5>
+                                <p>Build and start the application:</p>
+                                <pre><code>npm run build
+npm start</code>
+                                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting Section -->
+                <section id="troubleshooting" class="mb-5">
+                    <h2 class="border-bottom pb-2">Troubleshooting</h2>
+                    <div class="mt-4">
+                        <div class="accordion" id="troubleshootingAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#issue1">
+                                        Authentication Issues
+                                    </button>
+                                </h2>
+                                <div id="issue1" class="accordion-collapse collapse show" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>If you're experiencing authentication issues:</p>
+                                        <ol>
+                                            <li>Verify your Bluesky credentials in the .env file</li>
+                                            <li>Ensure your app password is correct</li>
+                                            <li>Check if your Bluesky account is active</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue2">
+                                        API Rate Limits
+                                    </button>
+                                </h2>
+                                <div id="issue2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>If you're hitting rate limits:</p>
+                                        <ul>
+                                            <li>Implement proper delay between requests</li>
+                                            <li>Use the built-in caching system</li>
+                                            <li>Consider upgrading to a paid API tier</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contributing Section -->
+                <section id="contributing" class="mb-5">
+                    <h2 class="border-bottom pb-2">Contributing</h2>
+                    <div class="mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>How to Contribute</h5>
+                                <ol>
+                                    <li>Fork the repository</li>
+                                    <li>Create a feature branch</li>
+                                    <li>Make your changes</li>
+                                    <li>Submit a pull request</li>
+                                </ol>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> Please read our <a href="https://github.com/chocoOnEstrogen/ahe-bot/blob/main/CONTRIBUTING.md" class="alert-link">Contributing Guidelines</a> before submitting a pull request.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="btn btn-primary rounded-circle" onclick="scrollToTop()">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Copy code function
+        function copyCode(button) {
+            const pre = button.parentElement;
+            const code = pre.querySelector('code');
+            const text = code.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        // Back to top button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById('back-to-top').style.display = 'block';
+            } else {
+                document.getElementById('back-to-top').style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Block list functionality
+        const blockListContainer = document.getElementById('blockListContainer');
+        const termSearch = document.getElementById('termSearch');
+        const categoryFilter = document.querySelector('.category-filter');
+        let blockListData = [];
+
+        // Fetch and display block list
+        fetch('/resources/block_list.json')
+            .then(response => response.json())
+            .then(data => {
+                blockListData = data;
+                const categories = [...new Set(data.map(item => item.category))];
+                
+                // Populate category filters
+                categories.forEach(category => {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge bg-secondary category-badge';
+                    badge.setAttribute('data-category', category);
+                    badge.textContent = category.replace('_', ' ');
+                    categoryFilter.appendChild(badge);
+                });
+
+                displayBlockList(data);
+                setupEventListeners();
+            })
+            .catch(error => console.error('Error loading block list:', error));
+
+        function displayBlockList(items) {
+            blockListContainer.innerHTML = '';
+            items.forEach(item => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 mb-3';
+                col.innerHTML = `
+                    <div class="card term-card severity-${item.severity}">
+                        <div class="card-body">
+                            <h5 class="card-title">${item.term.replace('_', ' ')}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">${item.category.replace('_', ' ')}</h6>
+                            <p class="card-text">${item.description}</p>
+                            <span class="badge bg-${item.severity === 'high' ? 'danger' : item.severity === 'medium' ? 'warning' : 'success'}">
+                                ${item.severity}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                blockListContainer.appendChild(col);
+            });
+        }
+
+        function setupEventListeners() {
+            // Search functionality
+            termSearch.addEventListener('input', filterBlockList);
+
+            // Category filter
+            document.querySelectorAll('.category-badge').forEach(badge => {
+                badge.addEventListener('click', () => {
+                    document.querySelectorAll('.category-badge').forEach(b => b.classList.remove('active'));
+                    badge.classList.add('active');
+                    filterBlockList();
+                });
+            });
+        }
+
+        function filterBlockList() {
+            const searchTerm = termSearch.value.toLowerCase();
+            const selectedCategory = document.querySelector('.category-badge.active').getAttribute('data-category');
+
+            const filteredItems = blockListData.filter(item => {
+                const matchesSearch = item.term.toLowerCase().includes(searchTerm) ||
+                                   item.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            displayBlockList(filteredItems);
+        }
+
+        // Active link handling
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html> 

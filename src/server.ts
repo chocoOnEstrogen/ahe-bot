@@ -3,6 +3,9 @@ import NodeCache from 'node-cache'
 import { Gelbooru } from '@/services/providers/gelbooru'
 import { Rule34 } from '@/services/providers/rule34'
 import { sendResponse } from '@/utils/web-server'
+import { join } from 'path'
+import { readFile } from 'fs/promises'
+import { existsSync } from 'fs'
 
 // Initialize caches with different TTLs
 const searchCache = new NodeCache({
@@ -62,6 +65,39 @@ async function prefetchPopularSearches(): Promise<void> {
 setInterval(() => void prefetchPopularSearches(), 30 * 60 * 1000)
 void prefetchPopularSearches()
 
+// Add this function to serve static files
+async function serveStaticFile(
+	_: IncomingMessage,
+	res: ServerResponse,
+	filePath: string
+): Promise<void> {
+	try {
+		const fullPath = join(process.cwd(), filePath)
+		if (!existsSync(fullPath)) {
+			throw new Error('File not found')
+		}
+
+		const content = await readFile(fullPath)
+		const ext = filePath.split('.').pop()
+		const contentTypes: Record<string, string> = {
+			'html': 'text/html',
+			'css': 'text/css',
+			'js': 'application/javascript',
+			'json': 'application/json',
+			'png': 'image/png',
+			'jpg': 'image/jpeg',
+			'jpeg': 'image/jpeg',
+			'gif': 'image/gif'
+		}
+
+		res.writeHead(200, { 'Content-Type': contentTypes[ext || 'text'] || 'text/plain' })
+		res.end(content)
+	} catch (error) {
+		res.writeHead(404)
+		res.end('File not found')
+	}
+}
+
 const server = createServer(
 	(req: IncomingMessage, res: ServerResponse): void => {
 		void (async () => {
@@ -74,6 +110,17 @@ const server = createServer(
 				if (req.method === 'OPTIONS') {
 					res.writeHead(200)
 					res.end()
+					return
+				}
+
+				// Serve static files
+				if (req.url === '/') {
+					await serveStaticFile(req, res, 'public/index.html')
+					return
+				}
+
+				if (req.url === '/resources/block_list.json') {
+					await serveStaticFile(req, res, 'src/resources/block_list.json')
 					return
 				}
 
@@ -163,7 +210,9 @@ const server = createServer(
 	},
 )
 
-const PORT = process.env.PORT || 3000
-server.listen(PORT, () => {
-	console.log(`Server running at http://localhost:${PORT}`)
-})
+export async function startServer() {
+  const PORT = parseInt(process.env.PORT || '3000', 10)
+	server.listen(PORT, '0.0.0.0', () => {
+		console.log(`Server running at http://localhost:${PORT}`)
+	})
+}

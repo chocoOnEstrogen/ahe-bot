@@ -8,7 +8,7 @@
   },
   "scripts": {
     "format": "prettier --cache --write . --ignore-path .prettierignore",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && npm run copy-static",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node -r module-alias/register dist/index.js",
     "serve": "ts-node -r tsconfig-paths/register src/server.ts",
@@ -18,7 +18,8 @@
     "docker:logs": "docker-compose logs -f",
     "pm2:start": "pm2 start ecosystem.config.js",
     "pm2:stop": "pm2 stop ecosystem.config.js",
-    "pm2:restart": "pm2 restart ecosystem.config.js"
+    "pm2:restart": "pm2 restart ecosystem.config.js",
+    "copy-static": "cp -r public dist/ && cp -r src/resources dist/resources"
   },
   "repository": {
     "type": "git",

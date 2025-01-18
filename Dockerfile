@@ -13,6 +13,10 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
+# Copy static files
+COPY public ./public
+COPY src/resources ./src/resources
+
 # Expose port
 EXPOSE 3000
 
