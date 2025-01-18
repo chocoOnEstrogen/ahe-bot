@@ -737,7 +737,7 @@ npm start</code>
                 col.innerHTML = `
                     <div class="card term-card severity-${item.severity}">
                         <div class="card-body">
-                            <h5 class="card-title">${item.term.replace('_', ' ')}</h5>
+                            <h5 class="card-title">${item.term.replaceAll('_', ' ')}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">${item.category.replace('_', ' ')}</h6>
                             <p class="card-text">${item.description}</p>
                             <span class="badge bg-${item.severity === 'high' ? 'danger' : item.severity === 'medium' ? 'warning' : 'success'}">
