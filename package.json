@@ -10,7 +10,7 @@
     "format": "prettier --cache --write . --ignore-path .prettierignore",
     "build": "tsc",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js",
+    "start": "node -r tsconfig-paths/register dist/index.js",
     "serve": "ts-node -r tsconfig-paths/register src/server.ts",
     "docker:build": "bash scripts/docker-build.sh",
     "docker:run": "bash scripts/docker-run.sh",
