@@ -34,8 +34,8 @@ export class PostingService {
 		const provider = Math.random() < 0.5 ? 'gelbooru' : 'rule34'
 
 		const searchParams = {
-			query: 'tits',
-			page: Math.floor(Math.random() * 10) + 1, // Random page between 1-10
+			query: '', // Empty query to get random images
+			page: Math.floor(Math.random() * 100) + 1, // Random page between 1-100 for more variety
 			limit: 1,
 		}
 
