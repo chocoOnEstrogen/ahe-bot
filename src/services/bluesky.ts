@@ -1,4 +1,4 @@
-import { BskyAgent } from '@atproto/api'
+import { BskyAgent, moderatePost } from '@atproto/api'
 import { BlueskyError, BlueskyErrorCodes } from '@/errors/Bluesky'
 import { IPost } from '@/interfaces/IPost'
 import { addRecentPost } from '@/server'
@@ -55,6 +55,15 @@ export class Bluesky {
 				text: postData.text,
 				tags: postData.tags,
 				createdAt: new Date().toISOString(),
+			}
+
+			if (postData.isNsfw) {
+				data.labels = {
+					$type: 'com.atproto.label.defs#selfLabels',
+					values: [{
+						val: 'sexual'
+					}]
+				}
 			}
 
 			if (postData.images && postData.images.length > 0) {

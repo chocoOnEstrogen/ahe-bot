@@ -10,4 +10,5 @@ export interface IPost {
 			height: number
 		}
 	}[]
+	isNsfw: boolean
 }

@@ -136,6 +136,7 @@ export class PostingService {
 						},
 					},
 				],
+				isNsfw,
 			}
 
 			await Bluesky.createPost(post)
