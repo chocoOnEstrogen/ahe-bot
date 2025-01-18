@@ -123,7 +123,7 @@ export class PostingService {
 			const hashTags = displayTags.map(tag => `#${tag}`)
 			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')} ${hashTags.join(' ')}`
 			const post: IPost = {
-				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}`,
+				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}\n${hashTags.join(' ')}`,
 				tags: displayTags,
 				images: [
 					{
