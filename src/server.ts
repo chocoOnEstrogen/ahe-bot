@@ -27,6 +27,9 @@ const providers = {
 	}),
 }
 
+const recentPosts: any[] = [] // Store last 20 posts
+const MAX_RECENT_POSTS = 20
+
 async function prefetchPopularSearches(): Promise<void> {
 	const popularTags = ['rating:safe', 'rating:questionable', 'rating:explicit']
 	const prefetchPromises: Promise<void>[] = []
@@ -200,6 +203,11 @@ const server = createServer(
 					return
 				}
 
+				if (req.url?.startsWith('/api/recent-posts')) {
+					sendResponse(res, recentPosts, 200)
+					return
+				}
+
 				res.writeHead(404)
 				res.end('Not found')
 			} catch (error) {
@@ -215,4 +223,11 @@ export async function startServer() {
 	server.listen(PORT, '0.0.0.0', () => {
 		console.log(`Server running at http://localhost:${PORT}`)
 	})
+}
+
+export function addRecentPost(post: any) {
+	recentPosts.unshift(post)
+	if (recentPosts.length > MAX_RECENT_POSTS) {
+		recentPosts.pop()
+	}
 }

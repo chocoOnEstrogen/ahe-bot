@@ -1,6 +1,7 @@
 import { BskyAgent } from '@atproto/api'
 import { BlueskyError, BlueskyErrorCodes } from '@/errors/Bluesky'
 import { IPost } from '@/interfaces/IPost'
+import { addRecentPost } from '@/server'
 
 export class Bluesky {
 	private agent: BskyAgent
@@ -78,6 +79,16 @@ export class Bluesky {
 			}
 
 			await agent.post(data)
+
+			addRecentPost({
+				text: postData.text,
+				tags: postData.tags,
+				timestamp: new Date().toISOString(),
+				images: postData.images?.map(img => ({
+					alt: img.alt,
+					aspectRatio: img.aspectRatio
+				}))
+			})
 
 			await agent.logout()
 		} catch (error: any) {

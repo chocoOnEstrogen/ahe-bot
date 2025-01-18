@@ -279,6 +279,11 @@
                                 <i class="bi bi-people"></i> Contributing
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#recent-posts">
+                                <i class="bi bi-clock-history"></i> Recent Posts
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -315,6 +320,16 @@
                                     </ul>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Posts Section -->
+                <section id="recent-posts" class="mb-5">
+                    <h2 class="border-bottom pb-2">Recent Posts</h2>
+                    <div class="mt-4">
+                        <div class="row" id="recentPostsContainer">
+                            <!-- Posts will be populated here -->
                         </div>
                     </div>
                 </section>
@@ -770,6 +785,40 @@ npm start</code>
                 this.classList.add('active');
             });
         });
+
+        // Add recent posts functionality
+        function fetchRecentPosts() {
+            fetch('/api/recent-posts')
+                .then(response => response.json())
+                .then(posts => {
+                    const container = document.getElementById('recentPostsContainer');
+                    container.innerHTML = posts.length ? '' : '<p class="text-muted">No recent posts</p>';
+                    
+                    posts.forEach(post => {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-6 mb-3';
+                        col.innerHTML = `
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-text">${post.text}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">${new Date(post.timestamp).toLocaleString()}</small>
+                                        <div>
+                                            ${post.tags?.map(tag => `<span class="badge bg-secondary me-1">${tag}</span>`).join('') || ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(col);
+                    });
+                })
+                .catch(error => console.error('Error fetching recent posts:', error));
+        }
+
+        // Fetch recent posts on page load and every minute
+        fetchRecentPosts();
+        setInterval(fetchRecentPosts, 60000);
     </script>
 </body>
 </html> 
