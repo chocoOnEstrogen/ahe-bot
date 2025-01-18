@@ -10,7 +10,7 @@
     "format": "prettier --cache --write . --ignore-path .prettierignore",
     "build": "tsc",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node -r tsconfig-paths/register dist/index.js",
+    "start": "node -r module-alias/register dist/index.js",
     "serve": "ts-node -r tsconfig-paths/register src/server.ts",
     "docker:build": "bash scripts/docker-build.sh",
     "docker:run": "bash scripts/docker-run.sh",
@@ -39,8 +39,12 @@
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "module-alias": "^2.2.3",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
     "sharp": "^0.33.5"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
