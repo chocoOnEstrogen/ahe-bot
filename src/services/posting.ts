@@ -61,11 +61,6 @@ export class PostingService {
 	}> {
 		const response = await fetch(url)
 		const arrayBuffer = await response.arrayBuffer()
-		// const type = response.headers.get('content-type') as
-		// 	| 'image/jpeg'
-		// 	| 'image/png'
-		// 	| 'image/gif'
-		// 	| 'image/webp
 
 		const image = sharp(Buffer.from(arrayBuffer))
 		const metadata = await image.metadata()
@@ -112,7 +107,8 @@ export class PostingService {
 
 			const displayTags = tags.slice(0, 5)
 			const isNsfw = rating === 'explicit'
-			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')}`
+			const hashTags = displayTags.map(tag => `#${tag}`)
+			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')} ${hashTags.join(' ')}`
 			const post: IPost = {
 				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}`,
 				tags: displayTags,
