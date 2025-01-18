@@ -49,6 +49,7 @@ export class PostingService {
 		return {
 			url: post.file_url,
 			tags: post.tags.split(' '),
+			rating: post.rating,
 		}
 	}
 
@@ -105,16 +106,19 @@ export class PostingService {
 
 	async createPost() {
 		try {
-			const { url, tags } = await this.fetchRandomImage()
+			const { url, tags, rating } = await this.fetchRandomImage()
 			const { buffer, type, width, height } =
 				await this.downloadAndResizeImage(url)
 
+			const displayTags = tags.slice(0, 5)
+			const isNsfw = rating === 'explicit'
+			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')}`
 			const post: IPost = {
-				text: `Random anime image\nTags: ${tags.slice(0, 5).join(', ')}`,
-				tags: tags.slice(0, 5),
+				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}`,
+				tags: displayTags,
 				images: [
 					{
-						alt: 'Random anime image',
+						alt: altText,
 						image: buffer,
 						imageType: type,
 						aspectRatio: {
