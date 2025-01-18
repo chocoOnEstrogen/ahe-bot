@@ -179,5 +179,11 @@
         "category": "behavioral",
         "severity": "high",
         "description": "Term associated with rape"
+    },
+    {
+        "term": "brother_and_sister",
+        "category": "behavioral",
+        "severity": "high",
+        "description": "Term associated with incest"
     }
 ]
