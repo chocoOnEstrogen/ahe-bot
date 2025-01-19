@@ -34,35 +34,36 @@ export class PostingService {
 		const providers = ['gelbooru', 'rule34'] as const
 		const startIndex = Math.random() < 0.5 ? 0 : 1
 		const wantSfw = Math.random() * 100 < config.posting.sfwChance
-
+	
 		for (let i = 0; i < providers.length; i++) {
 			const providerIndex = (startIndex + i) % providers.length
 			const provider = providers[providerIndex]
-
+	
 			const searchParams = {
-				query: wantSfw ? 'rating:safe' : 'rating:explicit', // Filter by desired rating
+				query: wantSfw ? 'rating:safe' : 'rating:explicit',
 				page: Math.floor(Math.random() * 100) + 1,
 				limit: 1,
 			}
-
+	
 			try {
 				const response = await this.providers[provider].search(searchParams)
-
+	
 				if (!response.success || response.data.length === 0) {
 					continue
 				}
-
+	
 				const post = response.data[0]
 				return {
 					url: post.file_url,
 					tags: post.tags.split(' '),
 					rating: post.rating,
+					source: post.source
 				}
 			} catch (error) {
 				continue
 			}
 		}
-
+	
 		throw new Error('Failed to fetch image from all providers')
 	}
 
@@ -114,16 +115,29 @@ export class PostingService {
 
 	async createPost() {
 		try {
-			const { url, tags, rating } = await this.fetchRandomImage()
-			const { buffer, type, width, height } =
-				await this.downloadAndResizeImage(url)
-
+			const { url, tags, rating, source } = await this.fetchRandomImage()
+			const { buffer, type, width, height } = await this.downloadAndResizeImage(url)
+	
 			const displayTags = tags.slice(0, 5)
 			const isNsfw = rating === 'explicit'
 			const hashTags = displayTags.map(tag => `#${tag}`)
+	
+			// Find artist tags (usually prefixed with "artist:")
+			const artistTags = tags.filter(tag => tag.startsWith('artist:'))
+			const artists = artistTags.map(tag => tag.replace('artist:', ''))
+			
+			// Build attribution text
+			let attribution = ''
+			if (artists.length > 0) {
+				attribution = `\nArtist: ${artists.join(', ')}`
+			}
+			if (source && source !== '' && source !== 'null') {
+				attribution += `\nSource: ${source}`
+			}
+	
 			const altText = `${isNsfw ? 'NSFW' : 'SFW'} artwork featuring: ${displayTags.join(', ')} ${hashTags.join(' ')}`
 			const post: IPost = {
-				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}\n${hashTags.join(' ')}`,
+				text: `✨ ${isNsfw ? 'NSFW' : 'SFW'} Art ✨${attribution}\n\nFeatured tags:\n${displayTags.map(tag => `• ${tag}`).join('\n')}\n${hashTags.join(' ')}`,
 				tags: displayTags,
 				images: [
 					{
@@ -138,7 +152,7 @@ export class PostingService {
 				],
 				isNsfw,
 			}
-
+	
 			await Bluesky.createPost(post)
 			console.log('Successfully posted to Bluesky')
 		} catch (error) {
