@@ -1,4 +1,4 @@
-import { BskyAgent, moderatePost } from '@atproto/api'
+import { BskyAgent } from '@atproto/api'
 import { BlueskyError, BlueskyErrorCodes } from '@/errors/Bluesky'
 import { IPost } from '@/interfaces/IPost'
 import { addRecentPost } from '@/server'
